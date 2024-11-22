@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'ajout de produit</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+    <h1 style="text-align: center;">Ajouter un Produit</h1>
+    <form id="form-ajout-produit">
+        <label for="nom-produit">Nom du produit :</label>
+        <input type="text" id="nom-produit" name="nom-produit" placeholder="Entrez le nom du produit" required>
+        <div id="error-nom" class="error"></div>
+
+        <label for="prix-produit">Prix :</label>
+        <input type="number" id="prix-produit" name="prix-produit" placeholder="Entrez le prix" step="0.01" required>
+        <div id="error-prix" class="error"></div>
+
+        <label for="quantite-produit">Quantité :</label>
+        <input type="number" id="quantite-produit" name="quantite-produit" placeholder="Entrez la quantité en stock" required>
+        <div id="error-quantite" class="error"></div>
+
+        <label for="categorie-produit">Catégorie :</label>
+        <select id="categorie-produit" name="categorie-produit" required>
+            <option value="">--Choisissez une catégorie--</option>
+            <option value="electronique">Électronique</option>
+            <option value="vetements">Vêtements</option>
+            <option value="alimentation">Alimentation</option>
+        </select>
+        <div id="error-categorie" class="error"></div>
+
+        <button type="submit">Ajouter le produit</button>
+    </form>
+    <div id="success-message" class="success"></div>
+
+    <script>
+        const form = document.getElementById('form-ajout-produit');
+        const successMessage = document.getElementById('success-message');
+
+        // Écouteur de soumission du formulaire
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche le rechargement de la page
+
+            // Réinitialise les messages d'erreur
+            const errors = document.querySelectorAll('.error');
+            errors.forEach(error => error.textContent = '');
+
+            successMessage.textContent = '';
+
+            // Récupère les valeurs des champs
+            const nom = document.getElementById('nom-produit').value.trim();
+            const prix = document.getElementById('prix-produit').value.trim();
+            const quantite = document.getElementById('quantite-produit').value.trim();
+            const categorie = document.getElementById('categorie-produit').value;
+
+            let hasError = false;
+
+            // Validation des champs
+            if (nom === '') {
+                document.getElementById('error-nom').textContent = "Le nom du produit est requis.";
+                hasError = true;
+            }
+
+            if (prix === '' || parseFloat(prix) <= 0) {
+                document.getElementById('error-prix').textContent = "Le prix doit être supérieur à 0.";
+                hasError = true;
+            }
+
+            if (quantite === '' || parseInt(quantite) <= 0) {
+                document.getElementById('error-quantite').textContent = "La quantité doit être supérieure à 0.";
+                hasError = true;
+            }
+
+            if (categorie === '') {
+                document.getElementById('error-categorie').textContent = "Veuillez sélectionner une catégorie.";
+                hasError = true;
+            }
+
+            // Si tout est valide
+            if (!hasError) {
+                successMessage.textContent = "Produit ajouté avec succès !";
+                form.reset(); // Réinitialise le formulaire
+            }
+        });
+    </script>
+
+</body>
+</html>
